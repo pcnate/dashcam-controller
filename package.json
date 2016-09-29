@@ -1,0 +1,22 @@
+{
+  "name": "dashcam-controller",
+  "version": "1.0.0",
+  "description": "pulls videos from dashcam and uploads them to a server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pcnate/dashcam-controller.git"
+  },
+  "author": "Nathan Baker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pcnate/dashcam-controller/issues"
+  },
+  "homepage": "https://github.com/pcnate/dashcam-controller#readme",
+  "dependencies": {
+    "serialport": "^4.0.1"
+  }
+}
