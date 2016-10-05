@@ -15,6 +15,11 @@ angular.module('dashcamControllerApp', ['ngRoute', 'ngAnimate'])
         controller: 'HomeController',
         controllerAs: 'homeCtrl'
       })
+      .when('/serial', {
+        templateUrl: '/views/serial.html',
+        controller: 'SerialController',
+        controllerAs: 'serialCtrl'
+      })
       .when('/settings', {
         templateUrl: '/views/settings.html',
         controller: 'SettingsController',
@@ -74,36 +79,47 @@ angular.module('dashcamControllerApp', ['ngRoute', 'ngAnimate'])
     var homeCtrl = this;
     $scope.t = 0;
 
-    homeCtrl.serial = [];
+  })
 
-    homeCtrl.sendSerial = () => {
-      let serialCommand = homeCtrl.serialInput;
+  /**
+   * @ngdoc controller
+   * @name dashcamControllerApp.SerialController
+   * @description home page controller
+   */
+  .controller('SerialController', function( $scope, socket ) {
+    var serialCtrl = this;
+    $scope.t = 0;
+
+    serialCtrl.serial = [];
+
+    serialCtrl.sendSerial = () => {
+      let serialCommand = serialCtrl.serialInput;
       let serial = { direction:'tx',message: serialCommand };
-      homeCtrl.serialInput = '';
-      homeCtrl.serial.unshift( serial );
+      serialCtrl.serialInput = '';
+      serialCtrl.serial.unshift( serial );
       socket.emit('command', { action: 'newSerial', serial: serial });
     }
 
-    homeCtrl.onSerial = ( serial ) => {
-      homeCtrl.serial = serial;
+    serialCtrl.onSerial = ( serial ) => {
+      serialCtrl.serial = serial;
       $scope.$apply(function() {
         $scope.t++;
       });
     }
 
-    homeCtrl.onNewSerial = ( serial ) => {
-      homeCtrl.serial.unshift( serial );
+    serialCtrl.onNewSerial = ( serial ) => {
+      serialCtrl.serial.unshift( serial );
       $scope.$apply( () => {
         $scope.t++;
       })
     }
 
-    socket.on( 'serial',      homeCtrl.onSerial    );
-    socket.on( 'newSerial',   homeCtrl.onNewSerial );
+    socket.on( 'serial',      serialCtrl.onSerial    );
+    socket.on( 'newSerial',   serialCtrl.onNewSerial );
 
     $scope.$on('$destroy', function() {
-      socket.removeListener('serial',      homeCtrl.onSerial    );
-      socket.removeListener('newSerial',   homeCtrl.onNewSerial );
+      socket.removeListener('serial',      serialCtrl.onSerial    );
+      socket.removeListener('newSerial',   serialCtrl.onNewSerial );
     })
 
     socket.emit('command', { action: 'loadSerial' })
