@@ -1,0 +1,14 @@
+<div class="row" ng-repeat="serial in homeCtrl.serial">
+
+  <div class="col-xs-6">{{ serial.direction }}
+  </div>
+  <div class="col-xs-6">{{ serial.message }}
+  </div>
+
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom serialNavbar">
+  <form ng-submit="homeCtrl.sendSerial()">
+    <input class="serialInput" autofocus ng-model="homeCtrl.serialInput">
+  </form>
+</nav>

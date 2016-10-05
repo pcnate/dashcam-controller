@@ -1,0 +1,10 @@
+body {
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
+.serialInput {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}

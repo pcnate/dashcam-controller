@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/pcnate/dashcam-controller#readme",
   "dependencies": {
+    "angular": "^1.5.8",
+    "angular-animate": "^1.5.8",
+    "angular-route": "^1.5.8",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "node-uuid": "^1.4.7",

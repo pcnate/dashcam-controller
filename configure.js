@@ -1,6 +1,3 @@
-console.log('running configuration');
-
-
 /**
  *
  */
@@ -12,9 +9,9 @@ const uuid          = require("node-uuid");
 const configFilePath = ".env";
 const GEN_ID = "Generate new ID";
 
-class PromptEmitter extends EventEmmitter {}
-const promptEmitter = new PromptEmitter();
-
+// class PromptEmitter extends EventEmmitter {}
+// const promptEmitter = new PromptEmitter();
+//
 // default values
 var schema = {
   properties: {
@@ -45,10 +42,37 @@ var schema = {
   }
 };
 
-//
-// Start the prompt
-//
-promptEmitter.on('readConfigFile', function() {
+/**
+ *  check whether a configuration file already exists
+ */
+exports.configFileExists = () => {
+  return fs.existsSync( configFilePath );
+}
+
+/**
+ *
+ */
+exports.getConfig = () => {
+  require('dotenv').config();
+
+  let conf = {}
+
+  for( const key in schema.properties  ) {
+    conf[key] = schema.properties[key].default;
+  }
+
+  for( const key in schema.properties  ) {
+    conf[key] = process.env[key];
+  }
+
+  return conf;
+
+}
+
+/**
+ *  read the configuration into the schema object
+ */
+exports.readConfigFile = (next) => {
 
   require('dotenv').config();
 
@@ -60,24 +84,26 @@ promptEmitter.on('readConfigFile', function() {
 
   }
 
-  promptEmitter.emit('startPrompt');
+  // promptEmitter.emit('startPrompt');
+  if( typeof next === 'function' ) {
+    next();
+  }
+};
 
-});
-
-//
-// Start the prompt
-//
-promptEmitter.on('startPrompt', function() {
+/**
+ * start the prompts
+ */
+exports.startPrompt = (next) => {
 
   prompt.start();
 
-  //
-  // Get two properties from the user: username and email
-  //
+  /**
+   *
+   */
   prompt.get( schema, function( err, result ) {
 
-    if( result.deviceID == GEN_ID ) {
-      result.deviceID = uuid.v4();
+    if( result.camID == GEN_ID ) {
+      result.camID = uuid.v4();
     }
 
     let config = '';
@@ -91,15 +117,15 @@ promptEmitter.on('startPrompt', function() {
     require("process").exit();
   });
 
-});
+};
 
 /**
  *  exit the application if no configuration file is found
  */
-if( fs.existsSync( configFilePath ) ) {
-  console.log("\r\nLoading existing configuration:\r\n");
-  promptEmitter.emit('readConfigFile');
-} else {
-  console.log("\r\nGenerating new configuration:\r\n");
-  promptEmitter.emit('startPrompt');
-}
+// if( fs.existsSync( configFilePath ) ) {
+//   console.log("\r\nLoading existing configuration:\r\n");
+//   promptEmitter.emit('readConfigFile');
+// } else {
+//   console.log("\r\nGenerating new configuration:\r\n");
+//   promptEmitter.emit('startPrompt');
+// }
