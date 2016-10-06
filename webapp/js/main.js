@@ -25,6 +25,11 @@ angular.module('dashcamControllerApp', ['ngRoute', 'ngAnimate'])
         controller: 'SettingsController',
         controllerAs: 'settingsCtrl'
       })
+      .when('/about', {
+        templateUrl: '/views/about.html',
+        controller: 'AboutController',
+        controllerAs: 'aboutCtrl'
+      })
 
     $locationProvider.html5Mode(true);
 
@@ -152,5 +157,16 @@ angular.module('dashcamControllerApp', ['ngRoute', 'ngAnimate'])
     })
 
     socket.emit('command', { action: 'loadSettings' })
+
+  })
+
+  /**
+  * @ngdoc controller
+  * @name dashcamControllerApp.AboutController
+  * @description settings page controller
+  */
+  .controller('AboutController', function( $scope, socket ) {
+    var aboutCtrl = this;
+    $scope.t = 0;
 
   })
