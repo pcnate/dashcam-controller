@@ -1,8 +1,8 @@
-<div class="row" ng-repeat="(setting, value) in settingsCtrl.settings">
+<form>
+  <div class="form-group" ng-repeat="(setting, value) in settingsCtrl.settings">
 
-  <div class="col-xs-6">{{ setting }}
-  </div>
-  <div class="col-xs-6">{{ value }}
-  </div>
+    <label for="{{ setting + '_field' }}">{{ setting }}</label>
+    <input type="text" class="form-control" id="{{ setting + '_field' }}" ng-model="value" />
 
-</div>
+  </div>
+</form>
