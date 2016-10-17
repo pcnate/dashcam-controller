@@ -1,8 +1,24 @@
 <form>
+
   <div class="form-group" ng-repeat="(setting, value) in settingsCtrl.settings">
 
     <label for="{{ setting + '_field' }}">{{ setting }}</label>
     <input type="text" class="form-control" id="{{ setting + '_field' }}" ng-model="value" />
 
   </div>
+
+  <div class="row"><div class="col-xs-12">&nbsp;</div></div>
+
+  <div clas="row">
+
+    <div class="col-xs-6">
+      <button class="btn btn-warning pull-right" ng-click="" type="button">Save</button>
+    </div>
+
+    <div class="col-xs-6">
+      <button class="btn btn-danger pull-left" ng-click="" type="button">Restart</button>
+    </div>
+    
+  </div>
+
 </form>

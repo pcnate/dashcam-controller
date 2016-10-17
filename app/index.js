@@ -1,5 +1,6 @@
 const fs = require("fs");
 const config = require('./configure.js');
+const uuid = require("node-uuid");
 
 if( process.argv.indexOf('--configure') !== -1 ) {
   // console.log('running configuration');
@@ -31,7 +32,7 @@ if( !fs.existsSync(".env") ) {
 
   var powerState = false;
 
-  var socket = {};
+  var socket = [];
   var serialHistory = [];
 
   /**
@@ -42,8 +43,8 @@ if( !fs.existsSync(".env") ) {
     data = data.toString().replace(/[^\x20-\x7E]/gmi, '');
 
     serialHistory.unshift({ direction: 'rx', message: data });
-    if( typeof socket.emit === 'function' ) {
-      socket.emit('newSerial', { direction: 'rx', message: data });
+    if( typeof io.emit === 'function' ) {
+      io.emit('newSerial', { direction: 'rx', message: data });
     }
 
     if( data === "POWER_ON" ) {
@@ -66,21 +67,25 @@ if( !fs.existsSync(".env") ) {
   var io = require('socket.io')(http);
 
   io.on('connection', function( sock ) {
-    socket = sock;
-    console.log('client connected');
+    var sockUuid = uuid.v4();
+    socket.push({ uuid: sockUuid, socket: sock });
+    // console.log( socket.length );
+    // console.log('client connected');
+    console.log( sockUuid, 'connected' );
 
-    socket.on('command', function( command ) {
+    sock.on('command', function( command ) {
       if( command.action ) {
         switch (command.action) {
           case 'loadSettings':
-            socket.emit('settings', config.getConfig() );
+            sock.emit('settings', config.getConfig() );
             break;
           case 'loadSerial':
-            socket.emit('serial', serialHistory );
+            sock.emit('serial', serialHistory );
             break;
           case 'newSerial':
             if( typeof port.write === 'function' ) {
               serialHistory.unshift( command.serial );
+              io.emit('serial', serialHistory );
               port.write( command.serial.message, ( err ) => {
                 if( err ) {
                   return console.log( 'Error on write: ', err.message );
@@ -96,8 +101,15 @@ if( !fs.existsSync(".env") ) {
       }
     })
 
-    socket.on('disconnect', function() {
-      socket = {};
+    sock.on('disconnect', function() {
+      console.log( sockUuid, 'disconnected' );
+
+      for( let i in socket ) {
+        if( socket[i].uuid == sockUuid ) {
+          socket.splice( i, 1 );
+        }
+      }
+
     })
   })
 

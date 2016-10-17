@@ -1,12 +1,19 @@
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
 
-    <div class="navbar-header">
+    <ul class="nav nav-tabs hidden-md hidden-lg">
+      <li ng-class="{ 'active': headerCtrl.view.current == 'home'     }" role="presentation"><a href="/">Home</a></li>
+      <li ng-class="{ 'active': headerCtrl.view.current == 'serial'   }" role="presentation"><a href="/serial">Serial</a></li>
+      <li ng-class="{ 'active': headerCtrl.view.current == 'settings' }" role="presentation"><a href="/settings">Settings</a></li>
+      <li ng-class="{ 'active': headerCtrl.view.current == 'about'    }" role="presentation"><a href="/about">About</a></li>
+    </ul>
+
+    <div class="navbar-header hidden-xs hidden-sm">
       <div class="nav navbar-nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/serial">Serial</a></li>
-        <li><a href="/settings">Settings</a></li>
-        <li><a href="/about">About</a></li>
+        <li ng-class="{ 'active': headerCtrl.view.current == 'home'     }"><a href="/">Home</a></li>
+        <li ng-class="{ 'active': headerCtrl.view.current == 'serial'   }"><a href="/serial">Serial</a></li>
+        <li ng-class="{ 'active': headerCtrl.view.current == 'settings' }"><a href="/settings">Settings</a></li>
+        <li ng-class="{ 'active': headerCtrl.view.current == 'about'    }"><a href="/about">About</a></li>
       </div>
     </div>
 

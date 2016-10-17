@@ -30,9 +30,23 @@ angular.module('dashcamControllerApp', ['ngRoute', 'ngAnimate'])
         controller: 'AboutController',
         controllerAs: 'aboutCtrl'
       })
+      .otherwise({
+        redirectTo: '/'
+      })
 
     $locationProvider.html5Mode(true);
 
+  })
+
+  /**
+   * @ngdoc controller
+   * @name dashcamControllerApp.HeaderController
+   * @description main view controller
+   */
+  .controller('HeaderController', function( $scope, viewFactory ) {
+    var headerCtrl = this;
+
+    headerCtrl.view = viewFactory.returnBindObject();
   })
 
   /**
@@ -80,7 +94,8 @@ angular.module('dashcamControllerApp', ['ngRoute', 'ngAnimate'])
    * @name dashcamControllerApp.HomeController
    * @description home page controller
    */
-  .controller('HomeController', function( $scope, socket ) {
+  .controller('HomeController', function( $scope, socket, viewFactory ) {
+    viewFactory.setView('home');
     var homeCtrl = this;
     $scope.t = 0;
 
@@ -91,7 +106,8 @@ angular.module('dashcamControllerApp', ['ngRoute', 'ngAnimate'])
    * @name dashcamControllerApp.SerialController
    * @description home page controller
    */
-  .controller('SerialController', function( $scope, socket ) {
+  .controller('SerialController', function( $scope, socket, viewFactory ) {
+    viewFactory.setView('serial');
     var serialCtrl = this;
     $scope.t = 0;
 
@@ -136,7 +152,8 @@ angular.module('dashcamControllerApp', ['ngRoute', 'ngAnimate'])
    * @name dashcamControllerApp.SettingsController
    * @description settings page controller
    */
-  .controller('SettingsController', function( $scope, socket ) {
+  .controller('SettingsController', function( $scope, socket, viewFactory ) {
+    viewFactory.setView('settings');
     var settingsCtrl = this;
     $scope.t = 0;
 
@@ -165,7 +182,8 @@ angular.module('dashcamControllerApp', ['ngRoute', 'ngAnimate'])
   * @name dashcamControllerApp.AboutController
   * @description settings page controller
   */
-  .controller('AboutController', function( $scope, socket ) {
+  .controller('AboutController', function( $scope, socket, viewFactory ) {
+    viewFactory.setView('about');
     var aboutCtrl = this;
     $scope.t = 0;
 
