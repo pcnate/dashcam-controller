@@ -8,3 +8,8 @@ body {
   height: 100%;
   position: absolute;
 }
+
+.navbar>.container>.nav-tabs {
+  padding-top: 8px;
+  border-bottom: 0px;
+}
